@@ -3,6 +3,7 @@ package com.example.hogvartss.service;
 import com.example.hogvartss.dto.CreateStudent;
 import com.example.hogvartss.dto.FacultyDto;
 import com.example.hogvartss.dto.StudentDto;
+import com.example.hogvartss.entity.Avatar;
 import com.example.hogvartss.entity.Student;
 import com.example.hogvartss.exceotion.FacultyNotFoundException;
 import com.example.hogvartss.exceotion.StudentNotFoundException;
@@ -12,6 +13,7 @@ import com.example.hogvartss.repository.FacultyRepository;
 import com.example.hogvartss.repository.StudentRepository;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,12 +25,14 @@ public class StudentService {
     private final StudentMapper studentMapper;
     private final FacultyRepository facultyRepository;
     private final FacultyMapping facultyMapping;
+    private final AvatarService avatarService;
 
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, FacultyRepository facultyRepository, FacultyMapping facultyMapping) {
+    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, FacultyRepository facultyRepository, FacultyMapping facultyMapping, AvatarService avatarService) {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
         this.facultyRepository = facultyRepository;
         this.facultyMapping = facultyMapping;
+        this.avatarService = avatarService;
     }
 
 
@@ -80,6 +84,14 @@ public class StudentService {
                 .map(Student::getFaculty)
                 .map(facultyMapping::toDto)
                 .orElseThrow(() -> new StudentNotFoundException(id));
+    }
+    public StudentDto uploadAvatar(long id, MultipartFile multipartFile) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
+        Avatar avatar = avatarService.create(student, multipartFile);
+        StudentDto studentDto = studentMapper.toDto(student);
+        studentDto.setAvatarUrl("http://localhost:8080/avatars/" + avatar.getId() + "/from-db");
+        return studentDto;
     }
 
 }

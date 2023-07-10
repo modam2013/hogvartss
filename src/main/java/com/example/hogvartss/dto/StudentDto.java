@@ -5,15 +5,9 @@ public class StudentDto {
     private String name;
     private int age;
     private FacultyDto faculty;
+    private String avatarUrl;
 
     public StudentDto() {
-    }
-
-    public StudentDto(long id, String name, int age, FacultyDto faculty) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.faculty=faculty;
     }
 
     public long getId() {
@@ -47,4 +41,13 @@ public class StudentDto {
     public void setFaculty(FacultyDto faculty) {
         this.faculty = faculty;
     }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
 }

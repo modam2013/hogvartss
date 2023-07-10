@@ -4,7 +4,9 @@ import com.example.hogvartss.dto.CreateStudent;
 import com.example.hogvartss.dto.FacultyDto;
 import com.example.hogvartss.dto.StudentDto;
 import com.example.hogvartss.service.StudentService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -48,6 +50,12 @@ public class StudentController {
     @GetMapping("/{id}/faculty")
     public FacultyDto findFaculty(@PathVariable("id") long id) {
         return studentService.findFaculty(id);
+    }
+
+    @PatchMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public StudentDto uploadAvatar(@PathVariable long id,
+                                   @RequestPart("avatar") MultipartFile multipartFile) {
+        return studentService.uploadAvatar(id, multipartFile);
     }
 
 }

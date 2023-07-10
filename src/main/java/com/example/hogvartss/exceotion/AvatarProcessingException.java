@@ -1,4 +1,4 @@
 package com.example.hogvartss.exceotion;
 
-public class AvatarProcessingException extends RuntimeException{
+public class AvatarProcessingException extends RuntimeException {
 }
